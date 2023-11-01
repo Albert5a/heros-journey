@@ -7,7 +7,6 @@ export const requestHerosList = async () => {
     );
     return response.data;
   } catch (error) {
-    console.error("***erro na requisição", error);
     throw new Error();
   }
 };

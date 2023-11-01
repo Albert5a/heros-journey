@@ -6,6 +6,7 @@ import HerosPowerTypo from "@/atoms/HerosPowerTypo";
 import { Dialog, DialogTitle, ListItemButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useCardsStore } from "@/store/cardsStore";
+import { useBattleStyleStore } from "@/store/battleStyleStore";
 
 const BattlesModal = () => {
   const isModalOpen = useModalStore((state) => state.isModalOpen);
@@ -15,7 +16,8 @@ const BattlesModal = () => {
   const [powerStatsOne, setPowerStatsOne] = useState(0);
   const [powerStatsTwo, setPowerStatsTwo] = useState(0);
   const [winner, setWinner] = useState();
-
+  const setBattleState = useBattleStyleStore((state) => state.setBattleState);
+  
   useEffect(() => {
     if (selectedCards && selectedCards.length > 1) {
       const powerStatsHeroOne = selectedCards[0]?.powerstats;
@@ -49,6 +51,7 @@ const BattlesModal = () => {
 
   const handleClose = () => {
     setSelectedCards([]);
+    setBattleState('')
     setIsModalOpen(!isModalOpen);
   };
 

@@ -3,25 +3,28 @@ import { useEffect } from "react";
 import { requestHerosList } from "@/api/requests";
 import { useModalStore } from "@/store/modalStore";
 import { useCardsStore } from "@/store/cardsStore";
-import { useBattleStore } from "@/store/battleStore";
+import { useJourneyStore } from "@/store/journeyStore";
 
 import HerosCard from "../organisms/HerosCard";
-import BattlesModal from "./BattlesModal";
 import Header from "@/organisms/Header";
 import { useSearchStore } from "@/store/searchStore";
+import { useBattleStyleStore } from "@/store/battleStyleStore";
 
 const HerosList = () => {
-  const herosBattle = useBattleStore((state) => state.herosBattle);
-  const setHerosBattle = useBattleStore((state) => state.setHerosBattle);
+  const herosJourney = useJourneyStore((state) => state.herosJourney);
+  const setHerosJourney = useJourneyStore((state) => state.setHerosJourney);
   const selectedCards = useCardsStore((state) => state.selectedCards);
   const setSelectedCards = useCardsStore((state) => state.setSelectedCards);
   const isModalOpen = useModalStore((state) => state.isModalOpen);
   const setIsModalOpen = useModalStore((state) => state.setIsModalOpen);
   const searchHero = useSearchStore((state) => state.searchHero);
+  const setBattleState = useBattleStyleStore((state) => state.setBattleState);
+  const battleState = useBattleStyleStore((state) => state.battleState);
 
   const handleCardClick = (selectedHero: any) => {
     if (selectedCards.length < 2) {
       setSelectedCards([...selectedCards, selectedHero]);
+      setBattleState(selectedHero)
       if (selectedCards.length === 1) {
         setIsModalOpen(!isModalOpen);
       }
@@ -32,27 +35,26 @@ const HerosList = () => {
     const handleHerosList = async () => {
       try {
         const heros = await requestHerosList();
-        setHerosBattle(heros);
+        setHerosJourney(heros);
       } catch (error) {
         console.error("erro ao receber herói");
       }
     };
     handleHerosList();
-  }, [setHerosBattle]);
+  }, [setHerosJourney]);
 
   return (
-    <div>
       <div className="flex flex-col items-center justify-center">
         <Header />
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-1 lg:gap-3 xl:gap-5 ">
           {searchHero
-            ? herosBattle
+            ? herosJourney
                 .filter((hero) =>
                   hero.name.toLowerCase().includes(searchHero.toLowerCase())
                 )
                 .map((filteredItem) => (
                   <div key={filteredItem.id}>
-                    <div onClick={() => handleCardClick(filteredItem)}>
+                    <div className={battleState === filteredItem ? 'border-[4px] border-red-600' : ''} onClick={() => handleCardClick(filteredItem)}>
                       <HerosCard
                         powerStats={
                           filteredItem.powerstats.intelligence +
@@ -68,9 +70,9 @@ const HerosList = () => {
                     </div>
                   </div>
                 ))
-            : herosBattle.map((hero) => (
+            : herosJourney.map((hero) => (
                 <div key={hero.id}>
-                  <div onClick={() => handleCardClick(hero)}>
+                  <div className={battleState === hero ? 'border-[4px] border-red-600' : ''} onClick={() => handleCardClick(hero)}>
                     <HerosCard
                       powerStats={
                         hero.powerstats.intelligence +
@@ -88,8 +90,6 @@ const HerosList = () => {
               ))}
         </div>
       </div>
-      <BattlesModal />
-    </div>
   );
 };
 

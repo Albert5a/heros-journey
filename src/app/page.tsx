@@ -1,9 +1,9 @@
-import HerosList from "@/templates/HerosList";
+import HerosJourneyPage from "@/pages/HerosJourneyPage";
 
 export default function Home() {
   return (
     <div className="flex justify-center items-center">
-      <HerosList />
+      <HerosJourneyPage />
     </div>
   );
 }
