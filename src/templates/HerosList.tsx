@@ -42,9 +42,9 @@ const HerosList = () => {
 
   return (
     <div>
-      <div className="block">
+      <div className="flex flex-col items-center justify-center">
         <Header />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-1 lg:gap-3 xl:gap-5 ">
           {searchHero
             ? herosBattle
                 .filter((hero) =>
