@@ -55,10 +55,13 @@ const BattlesModal = () => {
   return (
     <div>
       <Dialog open={isModalOpen}>
-        <DialogTitle textAlign={"center"}>
-          {winner}{" "}
+        <DialogTitle fontWeight="bold" textAlign={"center"}>
+          {winner}
           <DialogTitle color="green" fontWeight="bold">
             Winner!!!
+          </DialogTitle>
+          <DialogTitle fontWeight="bold">
+            {powerStatsOne} x {powerStatsTwo}
           </DialogTitle>
         </DialogTitle>
         <Box
@@ -67,11 +70,13 @@ const BattlesModal = () => {
           display={"flex"}
           alignItems={"center"}
           justifyContent={"space-between"}
+          className="hidden sm:flex p-2 cursor-pointer"
         >
           {selectedCards && selectedCards[0] && (
             <>
               <HerosCardModal
                 name={selectedCards[0].name}
+                powerStats={powerStatsOne}
                 image={selectedCards[0].images.sm}
               />
               <div className="block">
@@ -112,12 +117,17 @@ const BattlesModal = () => {
               </div>
               <HerosCardModal
                 name={selectedCards[1].name}
+                powerStats={powerStatsTwo}
                 image={selectedCards[1].images.sm}
               />
             </>
           )}
         </Box>
-        <ListItemButton autoFocus onClick={() => handleClose()}>
+        <ListItemButton
+          className="flex items-center justify-center"
+          autoFocus
+          onClick={() => handleClose()}
+        >
           Continuar batalhando
         </ListItemButton>
       </Dialog>
